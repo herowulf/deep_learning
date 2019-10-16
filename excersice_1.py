@@ -19,17 +19,22 @@ train_images, test_images = train_images / 255.0, test_images / 255.0
 'Model no hidden layers'
 
 'Callbacks'
-callback_list = [callbacks.EarlyStopping(monitor='val_loss',
+callback_list = [callbacks.EarlyStopping(monitor='val_acc',
                                         min_delta=1e-3,
-                                        patience=30,
+                                        patience=20,
                                         verbose=0,
                                         mode='auto'),
              callbacks.ModelCheckpoint('model_h0.h5',
-                                       monitor='val_loss',
+                                       monitor='val_acc',
                                        save_best_only=True,
                                        mode='auto',
                                        period=1,
-                                       verbose=0)]
+                                       verbose=0),
+            callbacks.ReduceLROnPlateau(monitor='val_acc',
+                                            factor=0.5,
+                                            patience=10,
+                                            min_lr=1e-6,
+                                            verbose=1)]
 
 model = models.Sequential([
     layers.Flatten(),
@@ -40,7 +45,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 history = model.fit(train_images, train_labels, epochs=500,
-                    validation_data=(test_images, test_labels))
+                    validation_data=(test_images, test_labels), callbacks = callback_list)
 
 func.plot_history(history, 'history_h0.png')
 
@@ -51,17 +56,22 @@ test_loss, test_acc = model.evaluate(test_images, test_labels)
 'Model one hidden layers'
 
 'Callbacks'
-callback_list = [callbacks.EarlyStopping(monitor='val_loss',
+callback_list = [callbacks.EarlyStopping(monitor='val_acc',
                                         min_delta=1e-3,
-                                        patience=30,
+                                        patience=20,
                                         verbose=0,
                                         mode='auto'),
              callbacks.ModelCheckpoint('model_h1_500.h5',
-                                       monitor='val_loss',
+                                       monitor='val_acc',
                                        save_best_only=True,
                                        mode='auto',
                                        period=1,
-                                       verbose=0)]
+                                       verbose=0),
+            callbacks.ReduceLROnPlateau(monitor='val_acc',
+                                            factor=0.5,
+                                            patience=10,
+                                            min_lr=1e-6,
+                                            verbose=1)]
 
 model = models.Sequential([
     layers.Flatten(),
@@ -72,7 +82,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 history = model.fit(train_images, train_labels, epochs=500,
-                    validation_data=(test_images, test_labels))
+                    validation_data=(test_images, test_labels), callbacks = callback_list)
 
 func.plot_history(history, 'history_h1_500.png')
 
@@ -82,17 +92,22 @@ test_loss, test_acc = model.evaluate(test_images, test_labels)
 
 'Model two hidden layers'
 
-callback_list = [callbacks.EarlyStopping(monitor='val_loss',
+callback_list = [callbacks.EarlyStopping(monitor='val_acc',
                                         min_delta=1e-3,
-                                        patience=30,
+                                        patience=20,
                                         verbose=0,
                                         mode='auto'),
              callbacks.ModelCheckpoint('model_h1_500_h2_50.h5',
-                                       monitor='val_loss',
+                                       monitor='val_acc',
                                        save_best_only=True,
                                        mode='auto',
                                        period=1,
-                                       verbose=0)]
+                                       verbose=0),
+            callbacks.ReduceLROnPlateau(monitor='val_acc',
+                                            factor=0.5,
+                                            patience=10,
+                                            min_lr=1e-6,
+                                            verbose=1)]
 
 model = models.Sequential([
     layers.Flatten(),
@@ -104,7 +119,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 history = model.fit(train_images, train_labels, epochs=500,
-                    validation_data=(test_images, test_labels))
+                    validation_data=(test_images, test_labels), callbacks = callback_list)
 
 func.plot_history(history, 'history_h1_500_h2_50.png')
 
