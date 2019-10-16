@@ -31,7 +31,7 @@ model.save('model_h0.h5')
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 
 'Model one hidden layers'
-model = models.Sequential([
+model = models.Sequential([s
     layers.Flatten(),
     layers.Dense(500, activation='relu'), # hidden layer 1
     layers.Dense(10, activation='softmax')])
