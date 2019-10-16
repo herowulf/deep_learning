@@ -47,7 +47,7 @@ model.compile(optimizer='adam',
 history = model.fit(train_images, train_labels, epochs=500,
                     validation_data=(test_images, test_labels), callbacks = callback_list)
 
-func.plot_history(history, 'history_h0.png')
+func.plot_history(history, 'history/history_h0.png')
 
 
 
@@ -81,10 +81,10 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-history = model.fit(train_images, train_labels, epochs=500,
+history = model.fit(train_images, train_labels, epochs=500, batch_size=2000,
                     validation_data=(test_images, test_labels), callbacks = callback_list)
 
-func.plot_history(history, 'history_h1_500.png')
+func.plot_history(history, 'history/history_h1_500.png')
 
 test_loss, test_acc = model.evaluate(test_images, test_labels)
 
@@ -121,6 +121,6 @@ model.compile(optimizer='adam',
 history = model.fit(train_images, train_labels, epochs=500,
                     validation_data=(test_images, test_labels), callbacks = callback_list)
 
-func.plot_history(history, 'history_h1_500_h2_50.png')
+func.plot_history(history, 'history/history_h1_500_h2_50.png')
 
 test_loss, test_acc = model.evaluate(test_images, test_labels)

@@ -54,10 +54,11 @@ history = model.fit_generator(datagen.flow(train_images, train_labels, batch_siz
 
 
 # history = model.fit(train_images, train_labels, epochs=500,
-#                     validation_data=(test_images, test_labels))
+#                     validation_data=(test_images, test_labels),
+#                     callbacks=callback_list)
 
-func.plot_history(history, 'history_conv_{}_{}.png'.format(opt, activ))
+func.plot_history(history, 'history/history_conv_best.png')
 
-print('Training {} {} done!'.format(opt, activ))
+print('Training done!')
 
 test_loss, test_acc = model.evaluate(test_images, test_labels)

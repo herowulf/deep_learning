@@ -46,7 +46,7 @@ for activ in ['relu', 'tanh']:
                             validation_data=(test_images, test_labels),
                             callbacks=callback_list)
 
-        func.plot_history(history, 'history_conv_{}_{}.png'.format(opt, activ))
+        func.plot_history(history, 'history/history_conv_{}_{}.png'.format(opt, activ))
 
         print('Training {} {} done!'.format(opt, activ))
 
