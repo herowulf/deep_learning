@@ -33,13 +33,15 @@ datagen = ImageDataGenerator(
     horizontal_flip=True)
 
 model = models.Sequential()
-model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+model.add(layers.Conv2D(32, (7, 7), activation='relu', input_shape=(32, 32, 3)))
 model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.Conv2D(64, (5, 5), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.Conv2D(128, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Flatten())
 model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(128, activation='relu'))
 model.add(layers.Dense(10, activation='softmax'))
 
 model.compile(optimizer='adam',
@@ -48,7 +50,7 @@ model.compile(optimizer='adam',
 
 model.summary()
 
-history = model.fit_generator(datagen.flow(train_images, train_labels, batch_size=1000),
+history = model.fit_generator(datagen.flow(train_images, train_labels, batch_size=1024),
                     steps_per_epoch=len(train_images) / 1000, epochs=500,
                     callbacks=callback_list, validation_data = (test_images, test_labels))
 
