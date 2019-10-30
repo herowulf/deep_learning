@@ -12,12 +12,12 @@ import func
 train_images, test_images = train_images / 255.0, test_images / 255.0
 
 
-callback_list = [callbacks.EarlyStopping(monitor='val_loss',
-                                        min_delta=1e-3,
+callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
+                                        min_delta=1e-4,
                                         patience=30,
                                         verbose=0,
                                         mode='auto'),
-            callbacks.ReduceLROnPlateau(monitor='val_acc',
+            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
                                             factor=0.5,
                                             patience=20,
                                             min_lr=1e-6,
@@ -42,15 +42,16 @@ for activ in ['relu', 'tanh']:
                       loss='sparse_categorical_crossentropy',
                       metrics=['accuracy'])
 
-        history = model.fit(train_images, train_labels, epochs=500,
+        history = model.fit(train_images, train_labels,
+                            epochs=500, batch_size=1000,
                             validation_data=(test_images, test_labels),
                             callbacks=callback_list)
 
-        func.plot_history(history, 'history/history_conv_{}_{}.png'.format(opt, activ))
+        func.plot_history(history, 'history/history2_conv_{}_{}.png'.format(opt, activ))
 
         print('Training {} {} done!'.format(opt, activ))
 
-        test_loss, test_acc = model.evaluate(test_images, test_labels)
+        test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=0)
         record.append([test_loss, test_acc])
 
 print(record)

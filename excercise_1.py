@@ -19,20 +19,14 @@ train_images, test_images = train_images / 255.0, test_images / 255.0
 'Model no hidden layers'
 
 'Callbacks'
-callback_list = [callbacks.EarlyStopping(monitor='val_acc',
-                                        min_delta=1e-3,
-                                        patience=20,
+callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
+                                        min_delta=1e-4,
+                                        patience=30,
                                         verbose=0,
                                         mode='auto'),
-             callbacks.ModelCheckpoint('model_h0.h5',
-                                       monitor='val_acc',
-                                       save_best_only=True,
-                                       mode='auto',
-                                       period=1,
-                                       verbose=0),
-            callbacks.ReduceLROnPlateau(monitor='val_acc',
+            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
                                             factor=0.5,
-                                            patience=10,
+                                            patience=20,
                                             min_lr=1e-6,
                                             verbose=1)]
 
@@ -51,25 +45,19 @@ func.plot_history(history, 'history/history_h0.png')
 
 
 
-test_loss, test_acc = model.evaluate(test_images, test_labels)
+test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=0)
 
 'Model one hidden layers'
 
 'Callbacks'
-callback_list = [callbacks.EarlyStopping(monitor='val_acc',
-                                        min_delta=1e-3,
-                                        patience=20,
+callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
+                                        min_delta=1e-4,
+                                        patience=30,
                                         verbose=0,
                                         mode='auto'),
-             callbacks.ModelCheckpoint('model_h1_500.h5',
-                                       monitor='val_acc',
-                                       save_best_only=True,
-                                       mode='auto',
-                                       period=1,
-                                       verbose=0),
-            callbacks.ReduceLROnPlateau(monitor='val_acc',
+            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
                                             factor=0.5,
-                                            patience=10,
+                                            patience=20,
                                             min_lr=1e-6,
                                             verbose=1)]
 
@@ -86,26 +74,20 @@ history = model.fit(train_images, train_labels, epochs=500, batch_size=2000,
 
 func.plot_history(history, 'history/history_h1_500.png')
 
-test_loss, test_acc = model.evaluate(test_images, test_labels)
+test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=0)
 
 
 
 'Model two hidden layers'
 
-callback_list = [callbacks.EarlyStopping(monitor='val_acc',
-                                        min_delta=1e-3,
-                                        patience=20,
+callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
+                                        min_delta=1e-4,
+                                        patience=30,
                                         verbose=0,
                                         mode='auto'),
-             callbacks.ModelCheckpoint('model_h1_500_h2_50.h5',
-                                       monitor='val_acc',
-                                       save_best_only=True,
-                                       mode='auto',
-                                       period=1,
-                                       verbose=0),
-            callbacks.ReduceLROnPlateau(monitor='val_acc',
+            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
                                             factor=0.5,
-                                            patience=10,
+                                            patience=20,
                                             min_lr=1e-6,
                                             verbose=1)]
 
@@ -123,4 +105,4 @@ history = model.fit(train_images, train_labels, epochs=500,
 
 func.plot_history(history, 'history/history_h1_500_h2_50.png')
 
-test_loss, test_acc = model.evaluate(test_images, test_labels)
+test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=0)
