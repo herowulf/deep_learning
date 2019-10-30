@@ -14,21 +14,25 @@ import func
 # Normalize pixel values to be between 0 and 1
 train_images, test_images = train_images / 255.0, test_images / 255.0
 
+if tf.test.is_gpu_available(): #Some how the validation accuracy monitor is called different in the gpu version of tensorflow
+    monitor = 'val_acc'
+else:
+    monitor = 'val_accuracy'
 
-
-'Model no hidden layers'
 
 'Callbacks'
-callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
+callback_list = [callbacks.EarlyStopping(monitor=monitor,
                                         min_delta=1e-4,
                                         patience=30,
                                         verbose=0,
                                         mode='auto'),
-            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
+            callbacks.ReduceLROnPlateau(monitor=monitor,
                                             factor=0.5,
                                             patience=20,
                                             min_lr=1e-6,
                                             verbose=1)]
+
+'Model no hidden layers'
 
 model = models.Sequential([
     layers.Flatten(),
@@ -38,7 +42,7 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-history = model.fit(train_images, train_labels, epochs=500,
+history = model.fit(train_images, train_labels, epochs=500, batch_size=1000,
                     validation_data=(test_images, test_labels), callbacks = callback_list)
 
 func.plot_history(history, 'history/history_h0.png')
@@ -49,18 +53,6 @@ test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=0)
 
 'Model one hidden layers'
 
-'Callbacks'
-callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
-                                        min_delta=1e-4,
-                                        patience=30,
-                                        verbose=0,
-                                        mode='auto'),
-            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
-                                            factor=0.5,
-                                            patience=20,
-                                            min_lr=1e-6,
-                                            verbose=1)]
-
 model = models.Sequential([
     layers.Flatten(),
     layers.Dense(500, activation='relu'), # hidden layer 1
@@ -69,27 +61,14 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-history = model.fit(train_images, train_labels, epochs=500, batch_size=2000,
+history = model.fit(train_images, train_labels, epochs=500, batch_size=1000,
                     validation_data=(test_images, test_labels), callbacks = callback_list)
 
 func.plot_history(history, 'history/history_h1_500.png')
 
 test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=0)
 
-
-
 'Model two hidden layers'
-
-callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
-                                        min_delta=1e-4,
-                                        patience=30,
-                                        verbose=0,
-                                        mode='auto'),
-            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
-                                            factor=0.5,
-                                            patience=20,
-                                            min_lr=1e-6,
-                                            verbose=1)]
 
 model = models.Sequential([
     layers.Flatten(),
@@ -100,7 +79,7 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-history = model.fit(train_images, train_labels, epochs=500,
+history = model.fit(train_images, train_labels, epochs=500, batch_size=1000,
                     validation_data=(test_images, test_labels), callbacks = callback_list)
 
 func.plot_history(history, 'history/history_h1_500_h2_50.png')

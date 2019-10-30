@@ -11,13 +11,17 @@ import func
 # Normalize pixel values to be between 0 and 1
 train_images, test_images = train_images / 255.0, test_images / 255.0
 
+if tf.test.is_gpu_available(): #Some how the validation accuracy monitor is called different in the gpu version of tensorflow
+    monitor = 'val_acc'
+else:
+    monitor = 'val_accuracy'
 
-callback_list = [callbacks.EarlyStopping(monitor='val_accuracy',
+callback_list = [callbacks.EarlyStopping(monitor=monitor,
                                         min_delta=1e-4,
                                         patience=30,
                                         verbose=0,
                                         mode='auto'),
-            callbacks.ReduceLROnPlateau(monitor='val_accuracy',
+            callbacks.ReduceLROnPlateau(monitor=monitor,
                                             factor=0.5,
                                             patience=20,
                                             min_lr=1e-6,
